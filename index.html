@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Child Prediction with Time display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        input {
+            margin: 10px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            background-color: #2082ea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        img {
+            display: block; 
+            margin: 50px auto; 
+            border: 1px solid #ccc; 
+            border-radius: 10px; 
+            max-width: 100%; 
+            height: auto; 
+        }
+
+        .display {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="display" class="display"></div>
+    <div>
+        <h3>First Child Prediction</h3>
+        <label for="dad">Dad's Name:</label>
+        <input type="text" id="dad" placeholder="Enter Dad's Name">
+        <br>
+        <label for="mom">Mommy's Name:</label>
+        <input type="text" id="mom" placeholder="Enter Mom's Name">
+        <div>
+            <button class="btn btn-primary" onclick="parent()">Guess</button>
+            <button class="btn btn-primary" onclick="clearResult()">Clear</button>
+        </div>
+        <p id="result"></p>
+        <img id="babeImage" src="" alt="" style="display: none; width: 200px; height: auto;">
+    </div>
+
+    <script>
+        function updateTime() {
+            var today = new Date();
+            var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            var dayName = days[today.getDay()];
+            var day = today.getDate();
+            var daySuffix;
+
+            if (day % 10 === 1 && day !== 11) {
+                daySuffix = 'st';
+            } else if (day % 10 === 2 && day !== 12) {
+                daySuffix = 'nd';
+            } else if (day % 10 === 3 && day !== 13) {
+                daySuffix = 'rd';
+            } else {
+                daySuffix = 'th';
+            }
+
+            var formattedDay = day + daySuffix;
+            var month = months[today.getMonth()];
+            var year = today.getFullYear();
+
+            var hours = today.getHours() % 12 || 12;
+            var minutes = String(today.getMinutes()).padStart(2, '0');
+            var seconds = String(today.getSeconds()).padStart(2, '0');
+            var ampm = today.getHours() >= 12 ? 'PM' : 'AM';
+
+            document.getElementById("display").innerHTML = 
+                `${dayName}, ${formattedDay} ${month} ${year} ${hours}:${minutes}:${seconds} ${ampm}`;
+        }
+        setInterval(updateTime, 1000);
+
+        function parent() {
+            var mom = document.getElementById("mom").value.trim();
+            var dad = document.getElementById("dad").value.trim();
+
+            if (!mom || !dad) {
+                alert("Please fill in both names!");
+                return;
+            }
+
+            var babeImage = document.getElementById("babeImage");
+            let momIndexSum = 0;
+            let dadIndexSum = 0;
+
+            for (let i = 0; i < dad.length; i++) {
+                dadIndexSum = i + 1;
+            }
+            for (let i = 0; i < mom.length; i++) {
+                momIndexSum = i + 1;
+            }
+
+            var totalIndexSum = momIndexSum + dadIndexSum;
+
+            if (totalIndexSum % 2 === 0) {
+                babeImage.src = "./images/baby girl.jpg"; 
+            } else {
+                babeImage.src = "./images/baby boy.jpg"; 
+            }
+            babeImage.style.display = "block";
+
+            document.getElementById("result").textContent = "Total Sum: " + totalIndexSum;
+        }
+
+        function clearResult() {
+            var babeImage = document.getElementById("babeImage");
+
+            document.getElementById("result").textContent = "";
+            babeImage.style.display = "none";
+            document.getElementById("mom").value = "";
+            document.getElementById("dad").value = "";
+        }
+    </script>
+</body>
+</html>
+
+</body>
+</html>
